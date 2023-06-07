@@ -2,22 +2,20 @@ import { useDebugValue, useEffect, useState } from "react"
 import MyButton from "../../shared/UI/Buttons/MyButton/MyButton"
 import Count from "../../shared/UI/Count/Count"
 import "./Product.scss"
-import share from "../../shared/UI/SVG/Share/Share.svg"
-import basket from "../../shared/UI/SVG/Basket/BasketWhite.svg"
-import downloadBlack from "../../shared/UI/SVG/Download/DownloadBlack.svg"
+import share from "../../assets/Share/Share.svg"
+import basket from "../../assets/Basket/BasketWhite.svg"
+import downloadBlack from "../../assets/Download/DownloadBlack.svg"
 import Breadcrumbs from "../../features/BreadCrumbs/BreadCrumbs"
 import { Link, useParams } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
-import axios from "axios"
 import {
-    CardApi,
     CardApiId,
+    ICard,
     ICardApi,
-    ICardData,
 } from "../../shared/api/CardApi"
-import { addBasket } from "../../app/Redux/Store/basket"
 import Toggle from "../../shared/UI/Toggle/Toggle"
 import Loader from "../../shared/UI/Loader/Loader"
+import ButtonAddBasket from "../../features/ButtonAddBasket/ButtonAddBasket"
+import Slider from "../../shared/UI/Slider/Slider"
 
 export interface ICardDataOne {
     data: ICardApi
@@ -25,20 +23,19 @@ export interface ICardDataOne {
 
 const Product = () => {
     const [count, setCount] = useState<number>(1)
-    const [prod, setProd] = useState<ICardApi>()
+    const [prod, setProd] = useState<ICard>()
     const [type, setType] = useState<boolean>(true)
     const countMin = () => {
         if (count > 1) {
             setCount((p) => p - 1)
         }
     }
-
+    document.title = String(prod?.name) || "404"
     const params = useParams()
 
     useEffect(() => {
-        CardApiId(params?.id || "0").then((e: ICardDataOne) => {
-            setProd(e?.data || [])
-            console.log(e)
+        CardApiId(params?.id || "0").then((e: ICard) => {
+            setProd(e || [])
         })
         let res = []
         let basket = JSON.parse(localStorage.getItem("basket") || "[]")
@@ -51,33 +48,27 @@ const Product = () => {
         }
     }, [])
 
-    const addBaskets = (post: ICardApi) => {
-        let basket = JSON.parse(localStorage.getItem("basket") || "[]")
-        let posts = post
-        posts.count = count
-        basket.push(posts)
-        localStorage.setItem("basket", JSON.stringify(basket))
-        dispatch(addBasket(basket))
-        setType(false)
 
-    }
-    const dispatch = useDispatch()
-
-    if (!prod?.name) {
+    if (!prod) {
         return <Loader/>
+    }
+
+    if(!prod?.name){
+        return <h1>Не найдено</h1>
     }
 
     return (
         <div className="Container">
             <Breadcrumbs
                 arr={[
-                    { name: "Каталог", link: "/" },
+                    { name: "Главная", link: "/" },
+                    { name: "Каталог", link: "/catalog" },
                     { name: `${prod?.name}`, link: `/product/${params.id}` },
                 ]}
             />
             <div className="Product">
                 <div className="Product__img">
-                    <img src={prod?.imgURL}></img>
+                    <Slider withBlock={true} image={prod?.image}/>
                 </div>
                 <div className="Product__info">
                     <div className="Product__type">
@@ -91,7 +82,7 @@ const Product = () => {
                     </div>
                     <div className="Product__price">
                         <div className="Price">
-                            <h2>{prod?.price} ₸</h2>
+                            <h2>{prod?.price} ₽</h2>
                         </div>
                         {type ? (
                             <>
@@ -108,19 +99,13 @@ const Product = () => {
                         </div>
                         <div className="Button">
                            
-                                <MyButton
-                                    onClick={() => {
-                                        addBaskets(prod || {})
-                                    }}
-                                >
-                                    В корзину <img src={basket} />
-                                </MyButton>
+                                <ButtonAddBasket id={Number(params.id)} count={count}/>
                                 </div>
                                 </>
                             ) : (
                                 <Link to="/basket">
                                     <MyButton>
-                                        К корзине <img src={basket} />
+                                        К корзине <img src={basket} alt=""/>
                                     </MyButton>
                                 </Link>
                             )}
@@ -128,24 +113,21 @@ const Product = () => {
                     </div>
                     <div className="Product__buttons">
                         <div className="Share">
-                            <img src={share} />
+                            <img src={share} alt=""/>
                         </div>
                         <div className="Promotion">
                             <p>
-                                При покупке от 10 000 ₸ бесплатная доставка по
+                                При покупке от 10 000 ₽ бесплатная доставка по
                                 Кокчетаву и области
                             </p>
                         </div>
                         <div className="PriceList">
                             <p>
-                                Прайс-лист <img src={downloadBlack} />
+                                Прайс-лист <img src={downloadBlack} alt=""/>
                             </p>
                         </div>
                     </div>
                     <div className="Product__brand">
-                        <p className="Pargaraph">
-                            Производитель: <span>{prod?.manufacturer}</span>
-                        </p>
                         <p className="Pargaraph">
                             Бренд: <span>{prod?.brand}</span>
                         </p>

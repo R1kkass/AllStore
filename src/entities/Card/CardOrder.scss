@@ -1,0 +1,33 @@
+.CardOrder{
+    display: flex;
+    gap: 25px;
+    padding-bottom: 20px;
+    
+    border-bottom: rgba(0,0,0,0.2) dotted 1px;
+    
+    &__img{
+        min-width: 30%;
+        max-width: 30%;
+        min-height: 191px;
+        object-fit: contain;
+        max-height: 191px;
+    }
+    &__content{
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        width: 30%;
+        justify-content: center;
+    }
+    .Name{
+        font-size: 20px;
+    }
+    .Price{
+        font-size: 20px;
+
+    }
+    &__info{
+        max-width: 140px;
+        overflow: hidden;
+    }
+}

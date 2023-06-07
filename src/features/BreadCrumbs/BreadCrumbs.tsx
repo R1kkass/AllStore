@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
 import './BreadCrumbs.scss'
-import crumb from '../../shared/UI/SVG/Crumbs/Crumb.svg'
+import crumb from "../../assets/Crumbs/Crumb.svg"
 
 interface IArrs{
     arr:TArr[]

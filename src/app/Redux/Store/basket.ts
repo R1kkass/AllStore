@@ -1,3 +1,4 @@
+import { IResponseDataBasket } from "../../../shared/api/BasketApi"
 import { ICardApi } from "../../../shared/api/CardApi"
 
 const initialState = {
@@ -7,7 +8,7 @@ const initialState = {
 
 interface IAction {
     type: string
-    basket: ICardApi[]
+    basket: IResponseDataBasket[]
     count: number
 }
 
@@ -17,7 +18,6 @@ export const ADD_COUNT = "ADD_COUNT"
 export const basketReducer = (state = initialState, action: IAction) => {
     switch (action.type) {
         case ADD_BASKET:
-            console.log(action);
             
             return { ...state, basket: action.basket, count: action.basket.length }
         case ADD_COUNT:
@@ -27,5 +27,5 @@ export const basketReducer = (state = initialState, action: IAction) => {
     }
 }
 
-export const addBasket = (posts:ICardApi[])=>({type: ADD_BASKET, basket: posts})
+export const addBasket = (posts:IResponseDataBasket[])=>({type: ADD_BASKET, basket: posts})
 export const addCount = (count:number)=>({type: ADD_COUNT, count: count})

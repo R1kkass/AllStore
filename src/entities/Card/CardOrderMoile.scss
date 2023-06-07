@@ -1,0 +1,27 @@
+.CardOrderMobile{
+    display: flex;
+    flex-direction: column;
+    padding-inline: 10px;
+    img{
+        width: 50%;
+        margin: 0 auto;   
+        height: 50%;
+    }
+    button{
+        width: 30px;
+        height: 30px;
+        img{
+            height: 20px;
+            width: 20px;
+        }
+    }
+    .Count{
+        display: flex;
+        justify-content: space-between;
+        .Delete{
+            button{
+                background-color: #ffc85e;
+            }
+        }
+    }
+}

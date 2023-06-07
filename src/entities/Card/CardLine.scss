@@ -2,14 +2,24 @@
 
 
 .CardLine {
+    background-color: #f6f6f6;
     div {
         width: 100%;
         display: flex;
         align-items: center;
     }
+    &:hover{
+        &__info{
+            p{
+                color: #3f4e65;
+            }
+        }
+        color: #3f4e65;
+
+    }
     &__info {
-        min-width: 450px;
-        max-width: 450px;
+        min-width: 50%;
+        max-width: 50%;
         overflow: hidden;
         @media screen and (max-width: 1000px) {
             max-width: 100px !important;

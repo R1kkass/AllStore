@@ -1,42 +1,30 @@
 import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { addPost } from "../../app/Redux/Store/product"
-import {
-    CardApi,
-    DeleteCardApi,
-    ICardApi,
-    ICardData,
-} from "../../shared/api/CardApi"
 import {
     FilterApi,
     FilterApiDelte,
-    FilterApiPut,
     IFilterApi,
     IFilterApiData,
 } from "../../shared/api/FilterApi"
 import Loader from "../../shared/UI/Loader/Loader"
-import EditModal from "../ModalAdd/EditModal"
-import ModalAdd from "../ModalAdd/ModalAdd"
 import ModalAddFilter from "../ModalFilterEdit/ModalAddFilter"
 import "../../pages/AdminPanel/AdminPanel.scss"
 import ModalEditPanel from "../ModalEditPanel/ModalEditPanel"
-import Toggle from "../../shared/UI/Toggle/Toggle"
+import { errorButtonAction } from "../../app/Redux/Store/errorButton"
+import { useDispatch } from "react-redux"
 
 const EditPanel = () => {
-    const dispatch = useDispatch()
-    const postPanel = useSelector((state: any) => state.product.posts)
-    const [idEdit, setIdEdit] = useState<number>(0)
     const [visible, setVisible] = useState<boolean>(false)
-    const [oneData, setOneData] = useState<IFilterApi>()
+    const [oneData, setOneData] = useState<Omit<IFilterApi, "registerInput">>()
     const [loader, setLoader] = useState<boolean>(false)
     const [filtres, setFiltres] = useState<IFilterApi[]>([])
+    const dispatch =useDispatch()
 
     const delte = (id: number) => {
         setLoader(true)
         FilterApiDelte(id).then(() => {
             FilterApi()
-                .then((e: IFilterApiData) => {
-                    setFiltres(e.data)
+                .then((e: IFilterApi[]) => {
+                    setFiltres(e)
                     setLoader(false)
                 })
                 .catch(() => {
@@ -48,8 +36,8 @@ const EditPanel = () => {
     const fetchFilter = () => {
         setLoader(true)
         FilterApi()
-            .then((e: IFilterApiData) => {
-                setFiltres(e.data)
+            .then((e: IFilterApi[]) => {
+                setFiltres(e)
                 setLoader(false)
             })
             .catch(() => {
@@ -60,12 +48,13 @@ const EditPanel = () => {
     useEffect(() => {
         setLoader(true)
         FilterApi()
-            .then((e: IFilterApiData) => {
-                setFiltres(e.data)
+            .then((e: IFilterApi[]) => {
+                setFiltres(e)
                 setLoader(false)
             })
             .catch(() => {
                 setLoader(false)
+                dispatch(errorButtonAction({visible: true, type: "Error", text: "Вы не авторизованы", id: Date.now()}))
             })
     }, [])
 
@@ -80,11 +69,11 @@ const EditPanel = () => {
                 setVisible={() => setVisible(false)}
             />
             <div className="Filter">
-                {filtres?.map(({ title, array, id }) => (
+                {filtres?.map(({ nameCategory, id }) => (
                     <>
                         <div className="Filter__block">
                             <div className="Filter__delete">
-                                <h3>{title}</h3>
+                                <h3>{nameCategory}</h3>
                                 <div>
                                     {" "}
                                     <button
@@ -95,20 +84,13 @@ const EditPanel = () => {
                                     <button
                                         onClick={() => {
                                             setVisible(true)
-                                            setOneData({ title, array, id })
+                                            setOneData({ nameCategory, id })
                                         }}
                                     >
                                         Редактировать фильтер
                                     </button>
                                 </div>
                             </div>
-                            <Toggle nameBtn="Показать параметры">
-                                {array?.map(({ name }) => (
-                                    <div className="Filter__text">
-                                        <p>{name}</p>
-                                    </div>
-                                ))}
-                            </Toggle>
                         </div>
                     </>
                 ))}

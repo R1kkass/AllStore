@@ -2,11 +2,12 @@ import { FC, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { IManufac } from "../../../widgets/FilterBlock/FilterBlock"
 import CheckBox from "../CheckBox/CheckBox"
-import polygonBottom from '../SVG/Polygon/PolygonBottom.svg'
-import polygonTop from '../SVG/Polygon/PolygonTop.svg'
+import polygonBottom from '../../../assets/Polygon/PolygonBottom.svg'
+import polygonTop from '../../../assets/Polygon/PolygonTop.svg'
+import { IFilterApi } from "../../api/FilterApi"
 
 const FilterUnitBlock: FC<{
-    manuf: IManufac[]
+    manuf?: IFilterApi[]
     callback: (name: string) => void
     typeParam: string
 }> = ({ manuf, callback, typeParam }) => {
@@ -16,14 +17,13 @@ const FilterUnitBlock: FC<{
     return (
         <>
             <div style={{ height: height }}>
-                {manuf?.map(({ name, count }) => (
+                {manuf?.map(({ nameCategory }) => (
                     <CheckBox
                         checked={JSON.parse(
                             searchParams.get(typeParam) || "[]"
-                        ).includes(name)}
-                        callback={()=>callback(name)}
-                        text={name}
-                        count={count}
+                        ).includes(nameCategory)}
+                        callback={()=>callback(nameCategory)}
+                        text={nameCategory}
                     />
                 ))}
             </div>

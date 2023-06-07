@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { useSearchParams } from "react-router-dom"
-import { IRedux } from "../../../app/Redux/Store/Index"
-import { addPost, filterPost } from "../../../app/Redux/Store/product"
-import { FilterApi, IFilterApi, IFilterApiData } from "../../api/FilterApi"
+import { filterPost } from "../../../app/Redux/Store/product"
+import { FilterApi, IFilterApi } from "../../api/FilterApi"
 import "./Filter.scss"
 
-const url = new URLSearchParams(window.location.search)
 
 const FilterTop = () => {
     const [filtres, setFilter] = useState<IFilterApi[]>([])
@@ -25,8 +23,8 @@ const FilterTop = () => {
     }
 
     useEffect(() => {
-        FilterApi().then((e: IFilterApiData) => {
-            setFilter(e.data)
+        FilterApi().then((e: IFilterApi[]) => {
+            setFilter(e)
             let per = searchParams.get("param")
             if (per) {
                 filterProductw(per)
@@ -36,18 +34,18 @@ const FilterTop = () => {
 
     return (
         <div className="Catalog__thirdLine">
-            {filtres?.map(({ title, array, id }) => (
+            {filtres?.map(({ nameCategory, id }) => (
                 <>
                     <div
                         className={
-                            searchParams.get("param")?.includes(title)
+                            searchParams.get("param")?.includes(nameCategory)
                                 ? "Catalog__active"
                                 : ""
                         }
-                        key={title}
-                        onClick={() => filterProductw(title)}
+                        key={id}
+                        onClick={() => filterProductw(nameCategory)}
                     >
-                        <p>{title}</p>
+                        <p>{nameCategory}</p>
                     </div>
                 </>
             ))}

@@ -1,0 +1,14 @@
+.DeleteButtonBasket{
+    display: flex;
+    img{
+        max-width: 30px;
+        max-height: 30px;
+    }
+    button{
+        width: 60px;
+    }
+    margin-left: auto;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}

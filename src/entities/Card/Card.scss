@@ -3,6 +3,8 @@
 
 .Card {
     width: 326px;
+    background-color: white;
+    margin-bottom: 10px;
     padding: 20px;
     padding-top: 42px;
     box-shadow: 0px 14px 39px -11px rgba(0, 0, 0, 0.06);
@@ -11,12 +13,13 @@
     padding-bottom: 29px;
     overflow: hidden;
     margin-top: 0;
+    background-color: #f6f6f6;
+
     &__img {
         display: flex;
         align-items: center;
         justify-content: center;
         height: 194px;
-        width: 326px;
         padding: 20px;
         img {
             height: 194px;

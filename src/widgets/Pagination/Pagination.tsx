@@ -1,21 +1,20 @@
 import "./Pagination.scss"
-import next from "../../shared/UI/SVG/Vector/Next.svg"
-import prev from "../../shared/UI/SVG/Vector/Prev.svg"
+import next from "../../assets/Vector/Next.svg"
+import prev from "../../assets/Vector/Prev.svg"
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
-import { ICardApi } from "../../shared/api/CardApi"
 import { IRedux } from "../../app/Redux/Store/Index"
 import { useSearchParams } from "react-router-dom"
 
 const Pagination = () => {
     const [searchPrams, setSearchParams] = useSearchParams()
-    const products = useSelector((state: IRedux) => state.product.posts)
-    const rlen = useSelector((state: IRedux) => state.product.length)
+    const products = useSelector((state: IRedux) => state.product.count)
+    const rlen = useSelector((state: IRedux) => state.product.count)
     const [len, setLength] = useState<number[]>([])
 
     useEffect(() => {
-        setLength(new Array(Math.ceil(rlen / 16)).fill(1))
-    }, [products])
+        setLength(new Array(Math.ceil(rlen / 10)).fill(1))
+    }, [products, rlen])
 
     const paginFn = (id: number) => {
         searchPrams.set("page", String(id))
@@ -24,7 +23,7 @@ const Pagination = () => {
 
     const paginNext = (num: number) =>{
         let page = Number(searchPrams.get("page"))
-        
+
         if(page>1 && num<0){
             searchPrams.set('page', String(page + num))
             setSearchParams(searchPrams)

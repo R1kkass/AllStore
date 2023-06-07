@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux"
 import { useSearchParams } from "react-router-dom"
 import { IRedux } from "../../app/Redux/Store/Index"
 import { addPost, filterPost } from "../../app/Redux/Store/product"
-import { ICardApi } from "../../shared/api/CardApi"
 
 const Price = () => {
     const products = useSelector((state: IRedux) => state.product.posts)

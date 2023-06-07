@@ -1,0 +1,98 @@
+@import '../../../app/Styles/Variables.scss';
+
+.Slider{
+    display: flex;
+    width: 100%;
+    position: relative;
+    box-shadow:0 0 5px 2px rgb(255, 200, 94);
+    border-radius: 20px;
+    overflow: hidden;
+    
+    &__content{
+        display: flex;
+        position: relative;
+        transition: 0.3s;
+        width: 100%;
+        img{
+            min-height: 100%;
+            min-width: 100%;
+        }    
+    }
+
+    button{
+        cursor: pointer;
+    }
+    .Next{
+        position: absolute;
+        right: 0;
+        height: 100%;
+        background: rgba(155, 155, 155, 0);
+        outline: none;
+        border: none;
+        color: white;
+        width: 10%;
+        transition: 0.3s;
+        font-size: 2.3em;
+        &::after{
+            content: ">";
+        }
+        &:hover{
+            background: rgba(255, 200, 94, 0.5);
+        }
+    }
+    .Prev{
+        position: absolute;
+        left: 0;
+        border: none;
+        height: 100%;
+        outline: none;
+        background: rgba(155, 155, 155, 0);
+        color: white;
+        font-size: 2.3em;
+        width: 10%;
+        transition: 0.3s;
+        &::after{
+            content: "<";
+        }
+        &:hover{
+            background: rgba(255, 200, 94, 0.5);
+        }
+    }
+    &__text{
+        display: flex;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+    }
+}
+
+
+.ImageSlider{
+    @extend %scroll;
+    padding-bottom: 10px;
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    width: 100%;
+    overflow-y: auto;
+    height: fit-content;
+    div{
+        border: 1px solid rgb(255, 200, 94);
+        border-radius: 20px;
+        overflow: hidden;
+        cursor: pointer;
+        min-width: 20%;
+        max-width: 20%;
+        min-height: 100%;
+        img{
+            min-height: 100%;
+            min-width: 100%;
+            object-fit: cover;
+        }
+        transition: 0.3s;
+        &:hover{
+            opacity: 0.8;
+            box-shadow: 0 0 5px 2px rgb(255, 200, 94);
+        }
+    }
+}

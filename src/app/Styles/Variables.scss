@@ -1,3 +1,29 @@
 $yellow: #ffc85e;
 $gray: #ededed;
 $grayText: #3f4e65;
+
+%scroll {
+    &::-webkit-scrollbar {
+        margin-right: 20px;
+        width: 5px;
+        height: 5px;
+      }
+      
+      /* Track */
+      &::-webkit-scrollbar-track {
+        background: #EDEDED; 
+      }
+       
+      /* Handle */
+      &::-webkit-scrollbar-thumb {
+        background: #ffc85e; 
+        width: 15px;
+        border-radius: 100px;
+      }
+      
+      /* Handle on hover */
+      &::-webkit-scrollbar-thumb:hover {
+        background: #ffc85e; 
+          width: 100px;
+      }
+}

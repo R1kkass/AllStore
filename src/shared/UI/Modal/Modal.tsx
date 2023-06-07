@@ -1,6 +1,5 @@
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { createPortal } from "react-dom"
-import MyButton from "../Buttons/MyButton/MyButton"
 import './Modal.scss'
 
 const Modal: FC<{
@@ -8,6 +7,15 @@ const Modal: FC<{
     visible: boolean
     callback: () => void
 }> = ({ visible, children, callback }) => {
+
+    useEffect(()=>{
+        if(visible) {
+            document.body.style.overflow="hidden"
+        }else{
+            document.body.style.overflow="auto"
+        }
+    },[visible])
+
     return (
         
         <>

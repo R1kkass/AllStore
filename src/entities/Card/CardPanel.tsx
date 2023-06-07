@@ -4,16 +4,17 @@ import { addPost } from "../../app/Redux/Store/product"
 import {
     CardApi,
     DeleteCardApi,
+    ICard,
     ICardApi,
     ICardData,
 } from "../../shared/api/CardApi"
 
-const CardPanel: FC<ICardApi> = (panel) => {
+const CardPanel: FC<ICard> = (panel) => {
     const dispatch = useDispatch()
     const postPanel = useSelector((state: any) => state.product.posts)
     const [idEdit, setIdEdit] = useState<number>(0)
     const [visible, setVisible] = useState<boolean>(false)
-    const [oneData, setOneData] = useState<ICardApi>()
+    const [oneData, setOneData] = useState<ICard>()
 
     const delte = (id: number) => {
         DeleteCardApi(id).then(() => {
@@ -31,7 +32,7 @@ const CardPanel: FC<ICardApi> = (panel) => {
     return (
         <div className="AdminPanel__card">
             <div className="AdminPanel__img">
-                <img src={panel?.imgURL} />
+                <img src={panel?.imgUrl} />
             </div>
             <div className="AdminPanel__name">
                 <div className="Name">{panel?.name}</div>

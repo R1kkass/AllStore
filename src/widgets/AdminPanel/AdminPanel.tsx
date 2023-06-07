@@ -2,28 +2,31 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { addPost } from "../../app/Redux/Store/product"
 import {
-    CardApi,
     DeleteCardApi,
-    ICardApi,
+    ICard,
     ICardData,
+    SeacrchApi,
 } from "../../shared/api/CardApi"
 import Loader from "../../shared/UI/Loader/Loader"
-import EditModal from "../ModalAdd/EditModal"
-import ModalAdd from "../ModalAdd/ModalAdd"
+import EditModal from "../../features/ModalAdd/EditModal"
+import ModalAdd from "../../features/ModalAdd/ModalAdd"
 import "../../pages/AdminPanel/AdminPanel.scss"
+import useQuery from "../../shared/hooks/useQuery"
+import { IRedux } from "../../app/Redux/Store/Index"
+import Pagination from "../Pagination/Pagination"
+import { useSearchParams } from "react-router-dom"
 
 const AdminPanel = () => {
     const dispatch = useDispatch()
-    const postPanel = useSelector((state: any) => state.product.posts)
+    const postPanel:ICard[] = useSelector((state: IRedux) => state.product.posts)
     const [idEdit, setIdEdit] = useState<number>(0)
     const [visible, setVisible] = useState<boolean>(false)
-    const [oneData, setOneData] = useState<ICardApi>()
+    const [oneData, setOneData] = useState<ICard>()
     const [loader, setLoader] = useState<boolean>(false)
+    const [searchParams] = useSearchParams()
 
-    const delte = (id: number) => {
-        setLoader(true)
-        DeleteCardApi(id).then(() => {
-            CardApi()
+    const search = async () => {
+        SeacrchApi(searchParams)
                 .then((e: ICardData) => {
                     dispatch(addPost(e.data))
                     setLoader(false)
@@ -31,20 +34,15 @@ const AdminPanel = () => {
                 .catch(() => {
                     setLoader(false)
                 })
-        })
     }
 
-    useEffect(() => {
+    const delte = (id: number) => {
         setLoader(true)
-        CardApi()
-            .then((e: ICardData) => {
-                dispatch(addPost(e.data))
-                setLoader(false)
-            })
-            .catch(() => {
-                setLoader(false)
-            })
-    }, [])
+        DeleteCardApi(id).then(() => {
+            search()
+        })
+    }
+    useQuery({callback: addPost, request: search, dependencies: [searchParams]})
 
     return (
         <div className="AdminPanel">
@@ -56,10 +54,10 @@ const AdminPanel = () => {
                 setVisible={(bol: boolean) => setVisible(bol)}
                 id={idEdit}
             />
-            {postPanel?.map((panel: ICardApi) => (
+            {postPanel?.map((panel: ICard) => (
                 <div key={panel.id} className="AdminPanel__card">
                     <div className="AdminPanel__img">
-                        <img src={panel.imgURL} />
+                        <img src={panel.image?.[0]?.imgUrl} alt=""/>
                     </div>
                     <div className="AdminPanel__name">
                         <div className="Name">{panel.name}</div>
@@ -81,7 +79,6 @@ const AdminPanel = () => {
                                 setVisible(true)
                                 setIdEdit(panel?.id || 0)
                                 setOneData(panel)
-                                console.log(oneData)
                             }}
                         >
                             Редактировать
@@ -89,6 +86,7 @@ const AdminPanel = () => {
                     </div>
                 </div>
             ))}
+            <Pagination/>
         </div>
     )
 }

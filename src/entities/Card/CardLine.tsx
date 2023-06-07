@@ -1,58 +1,30 @@
 import MyButton from "../../shared/UI/Buttons/MyButton/MyButton"
-import deletes from "../../shared/UI/SVG/Delete/Delete.svg"
-import { ICardApi } from "../../shared/api/CardApi"
-import { FC, useContext } from "react"
+import { ICard, ICardApi } from "../../shared/api/CardApi"
+import { FC } from "react"
 import "./CardLine.scss"
 import { useDispatch } from "react-redux"
 import { addBasket } from "../../app/Redux/Store/basket"
 import Count from "../../shared/UI/Count/Count"
 import { Link } from "react-router-dom"
+import { UpdataCountBasket } from "../../shared/api/BasketApi"
+import DeleteButtonBasket from "../../features/DeleteButtonBasket/DeleteButtonBasket"
 
-const CardLine: FC<ICardApi> = ({ id, name, price, imgURL, size, count }) => {
+const CardLine: FC<ICard> = ({ id, name, price, imgUrl, size, count, productsid }) => {
     const dispatch = useDispatch()
 
-    const countFn = (id: number) => {
-        let baskets = JSON.parse(localStorage.getItem("basket") || "[]")
-        let res = baskets.map((key: ICardApi) => {
-            if (key.id == id) {
-                console.log(id == key.id)
-
-                key.count = (key?.count || 1) + 1
-            }
-            return key
-        })
-        localStorage.setItem("basket", JSON.stringify(res))
-        dispatch(addBasket(res))
-    }
-
-    const deletePost = (id: number) => {
-        let basket = JSON.parse(localStorage.getItem("basket") || "[]")
-        let res = basket.filter((key: ICardApi) => {
-            return key.id != id
-        })
-        localStorage.setItem("basket", JSON.stringify(res))
-        dispatch(addBasket(res))
-    }
-
-    const countFnMin = (id: number) => {
-        let baskets = JSON.parse(localStorage.getItem("basket") || "[]")
-        let res = baskets.map((key: ICardApi) => {
-            if (key.id == id) {
-                console.log(id == key.id)
-
-                key.count = (key?.count || 1) - 1
-            }
-            return key
-        })
-        localStorage.setItem("basket", JSON.stringify(res))
-        dispatch(addBasket(res))
+    const countFnMin = (count: number) => {
+            UpdataCountBasket({id: id || 0, count})
+                .then(e=>{
+                    dispatch(addBasket(e))
+                })
+                .catch(e=>console.log(e))
     }
 
     return (
         <div className="CardLine__product">
-            <Link to={`/product/${id}`}>
+            <Link to={`/product/${productsid || id}`}>
                 <div className="CardLine__img">
-                    <img src={imgURL} />
+                    <img src={imgUrl} alt=""/>
                 </div>
                 <div className="CardLine__info">
                     <p>{size}</p>
@@ -66,18 +38,16 @@ const CardLine: FC<ICardApi> = ({ id, name, price, imgURL, size, count }) => {
             <div className="CardLine__count">
                 <Count
                     count={count || 1}
-                    onClickMinus={() => countFnMin(id || 0)}
-                    onClickPlus={() => countFn(id || 0)}
+                    onClickMinus={() => countFnMin(Number(count)-1)}
+                    onClickPlus={() => countFnMin(Number(count)+1)}
                 />
             </div>
             <div className="CardLine__price">
-                <p>{price}₸</p>
+                <p>{price}{" "}₽</p>
             </div>
 
             <div className="CardLine__delete">
-                <MyButton onClick={() => deletePost(id || 0)}>
-                    <img src={deletes} alt="" />
-                </MyButton>
+                <DeleteButtonBasket id={id || 0}/>
             </div>
         </div>
     )

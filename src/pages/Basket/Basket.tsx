@@ -7,78 +7,45 @@ import MyButton from "../../shared/UI/Buttons/MyButton/MyButton"
 import CardLine from "../../entities/Card/CardLine"
 import Modal from "../../shared/UI/Modal/Modal"
 import "./Basket.scss"
+import { GetBasket, IResponseDataBasket } from "../../shared/api/BasketApi"
+import { Link } from "react-router-dom"
+import Counter from "../../features/Counter/Counter"
+import BasketList from "../../widgets/BasketList/BasketList"
 
 
 const Basket = () => {
-    const [visible, setVisible] = useState<boolean>(false)
     const dispatch = useDispatch()
-    const bask: ICardApi[] = useSelector((state: any) => state.basket.basket)
     const count: number = useSelector((state: any) => state.basket.count)
+    document.title = "Корзина"
 
     useEffect(() => {
-        dispatch(addBasket(JSON.parse(localStorage.getItem("basket") || "[]")))
+        GetBasket().then(e=>
+            dispatch(addBasket(e))            
+        )
     }, [count])
-
-    const clearBasket = () => {
-        setVisible(true)
-        localStorage.setItem("basket", "")
-        dispatch(addBasket(JSON.parse(localStorage.getItem("basket") || "[]")))
-    }
 
     return (
         <div className="Basket">
             <Breadcrumbs
                 arr={[
-                    { name: "Каталог", link: "/" },
+                    { name: "Главная", link: "/" },
+                    { name: "Каталог", link: "/catalog" },
                     { name: "Корзина", link: "/basket" },
                 ]}
             />
-            <Modal visible={visible} callback={() => setVisible(false)}>
-                <h1 className="BasketThank">Спасибо за заказ</h1>
-            </Modal>
             <h1>Корзина</h1>
-            {bask?.map(
-                ({
-                    id,
-                    code,
-                    name,
-                    price,
-                    imgURL,
-                    size,
-                    brand,
-                    manufacturer,
-                    count,
-                }) => (
-                    <Fragment key={id}>
-                    <CardLine
-                        manufacturer={manufacturer}
-                        code={code}
-                        brand={brand}
-                        price={price}
-                        id={id}
-                        name={name}
-                        imgURL={imgURL}
-                        size={size}
-                        count={count}
-                    />
-                    </Fragment>
-                )
-            )}
+            <BasketList/>
             {count ? (
                 <div className="Basket__order">
                     <div>
-                        <MyButton onClick={() => clearBasket()}>
-                            Оформить заказ
-                        </MyButton>
+                        <Link to="/order">
+                            <MyButton>
+                                Оформить заказ
+                            </MyButton>
+                        </Link>
                     </div>
                     <div>
-                        <p>
-                            {bask?.reduce((key, count) => {
-                                return (key +=
-                                    Number(count.price) * (count?.count || 1))
-                            }, 0)}
-                            ₸
-                        </p>
+                        <Counter/>
                     </div>
                 </div>
             ) : (

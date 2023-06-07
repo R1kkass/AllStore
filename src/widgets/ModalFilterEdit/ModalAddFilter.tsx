@@ -16,36 +16,21 @@ const ModalAddFilter: FC<{ callback: () => void }> = ({ callback }) => {
     const [visible, setVisible] = useState<boolean>(false)
     const [paramFilter, setParamFilter] = useState<IArray[]>([])
 
-    const refName = useRef<HTMLInputElement>(null)
-    const refSize = useRef<HTMLInputElement>(null)
-
-    const deleteCategory = (id: number) => {
-        setParamFilter(
-            paramFilter?.filter((param, i) => {
-                return i != id
-            })
-        )
-    }
-
-    const addCategory = () => {
-        if (refSize?.current?.value) {
-            setParamFilter([...paramFilter, { name: refSize?.current?.value }])
-            refSize.current.value = ""
-        }
-    }
-
-    const addParam = () => {
-        if (refName?.current?.value) {
-            const r: IFilterApi = {
-                title: refName?.current?.value || "",
-                array: paramFilter,
-            }
-            FilterApiPost(r).then((e) => {
-                setVisible(false)
-                callback()
-                setParamFilter([])
-            })
-        }
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        setError
+    } = useForm<IFilterApi>()
+    const onSubmit = (data: IFilterApi) => {
+        console.log(data);
+        
+        FilterApiPost(data).then((e) => {
+            setVisible(false)
+            callback()
+            setParamFilter([])
+        })
+        .catch(e=>setError("registerInput", {message: "⚠ Ошибка"}))
     }
 
     return (
@@ -55,52 +40,22 @@ const ModalAddFilter: FC<{ callback: () => void }> = ({ callback }) => {
             </MyButton>
             <Modal visible={visible} callback={() => setVisible(false)}>
                 <div className="ModalAdd__form">
-                    <form>
+                <form onSubmit={handleSubmit(onSubmit)}>
                         <div>
                             <label>
                                 Название
-                                <input placeholder="Название" ref={refName} />
-                            </label>
-                        </div>
-                        <div>
-                            <label>
-                                Подкатегория
                                 <input
-                                    placeholder="Подкатегория"
-                                    ref={refSize}
+                                    placeholder="Название"
+                                    {...register("nameCategory", {
+                                        required: "⚠ Введите название",
+                                        maxLength: 40,
+                                    })}
                                 />
                             </label>
+                            <p className="Error">{errors?.nameCategory?.message}</p>
                         </div>
-                        <div className="EditModal__params">
-                        {paramFilter?.map((key, i) => (
-                            <div >
-                                <label>{key.name}</label>
-                                <button
-                                    onClick={(e) => {
-                                        e.preventDefault()
-                                        deleteCategory(i)
-                                    }}
-                                >
-                                    X
-                                </button>
-                            </div>
-                        ))}
-                        </div>
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault()
-                                addCategory()
-                            }}
-                        >
-                            Добавить фильтер
-                        </button>
-                        <input
-                            onClick={(e) => {
-                                e.preventDefault()
-                                addParam()
-                            }}
-                            type="submit"
-                        />
+                        <input type="submit" />
+                        <p className="Error Message">{errors.registerInput?.message}</p>
                     </form>
                 </div>
             </Modal>

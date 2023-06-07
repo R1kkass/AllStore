@@ -1,0 +1,111 @@
+@keyframes window{
+    0%{
+        bottom: -100px 
+    }
+    50% {
+        bottom: 10px
+    }
+    100%{
+        
+    }
+}
+
+.ErrorMessage {
+    position: relative;
+    left: 10px;
+    bottom: 10px;
+    background-color: red;
+    box-shadow: 0 0 5px 2px red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+    font-weight: 700;
+    color: white;
+    border-radius: 5px;
+    height: 60px;
+    min-width: 250px;
+    width: fit-content;
+    padding-right: 50px;
+    padding-left: 30px;
+    div{
+        
+        &:nth-child(1){
+            margin: 0 auto;
+            
+        }
+        &:nth-child(2){
+            position: absolute;
+            margin-right: 10px;
+            right: 0px;
+            cursor: pointer;
+            width: 30px;
+            font-size: 20px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            &:hover{
+                background-color: rgb(235, 40, 40);
+                border-radius: 5px;
+                box-shadow: 0 0 5px 2px;
+            }
+            &:active{
+                background-color: rgb(235, 40, 40);
+                border-radius: 5px;
+                box-shadow: 0 0 5px 0px;
+            }
+        }
+    }
+}
+
+.SuccesMessage {
+    position: relative;
+    left: 10px;
+    bottom: 10px;
+    background-color: rgb(0, 81, 255);
+    box-shadow: 0 0 5px 2px rgb(0, 81, 255);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+    font-weight: 700;
+    color: white;
+    border-radius: 5px;
+    height: 60px;
+    min-width: 250px;
+    width: fit-content;
+    padding-right: 50px;
+    padding-left: 30px;
+    div{
+        
+        &:nth-child(1){
+            margin: 0 auto;
+            
+        }
+        &:nth-child(2){
+            position: absolute;
+            margin-right: 10px;
+            right: 0px;
+            cursor: pointer;
+            width: 30px;
+            font-size: 20px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            &:hover{
+                background-color: rgb(26, 98, 255);
+                border-radius: 5px;
+                box-shadow: 0 0 5px 2px;
+            }
+            &:active{
+                background-color: rgb(26, 98, 255);
+                border-radius: 5px;
+                box-shadow: 0 0 5px 0px;
+            }
+        }
+    }
+}

@@ -15,49 +15,13 @@ const Sort = () => {
         searchParams.get("sort") || "По умолчанию"
     )
     const [visible, setVisble] = useState<boolean>(false)
-    const product = useSelector((state: IRedux) => state.product.posts)
-    const dispatch = useDispatch()
 
-    const sortProduct = (type: string) => {
-        let res
+    const sortProduct = (type: string, column: string, order: string) => {
         setSortType(type)
-        switch (type) {
-            case "По убыванию цены":
-                res = product.sort((a: ICardApi, b: ICardApi) => {
-                    return (Number(b.price) || 0) - (Number(a.price) || 0)
-                })
-                break
-            case "По возрастанию цены":
-                res = product.sort((a: ICardApi, b: ICardApi) => {
-                    return (Number(a.price) || 0) - (Number(b.price) || 0)
-                })
-                break
-            case "По навзванию (А-Я)":
-                res = product.sort((a: ICardApi, b: ICardApi) => {
-                    return a?.name?.localeCompare(b?.name)
-                })
-                break
-            case "По названию (Я-А)":
-                res = product.sort((a: ICardApi, b: ICardApi) => {
-                    return b?.name?.localeCompare(a?.name)
-                })
-                break
-        }
-        console.log(res)
-        if (!searchParams.get("sort") || searchParams.get('sort')!=type) {
-            searchParams.set("sort", type)
-            setSearchParams(searchParams.toString())
-        }
-        dispatch(addPost(res || []))
+        searchParams.set('order', order)
+        searchParams.set('column', column)
+        setSearchParams(searchParams)
     }
-
-    useEffect(() => {
-        const res = url.get("sort")
-        
-        if (res) {
-            sortProduct(res)
-        }
-    }, [])
 
     return (
         <div className="Sort">
@@ -69,28 +33,28 @@ const Sort = () => {
                 <div className="Sort__toggle">
                     <p
                         onClick={() => {
-                            sortProduct("По убыванию цены")
+                            sortProduct("По убыванию цены", "price", "DESC")
                         }}
                     >
                         По убыванию цены
                     </p>
                     <p
                         onClick={() => {
-                            sortProduct("По возрастанию цены")
+                            sortProduct("По возрастанию цены", "price", "ASC")
                         }}
                     >
                         По возрастанию цены
                     </p>
                     <p
                         onClick={() => {
-                            sortProduct("По навзванию (А-Я)")
+                            sortProduct("По навзванию (А-Я)", "name", "ASC")
                         }}
                     >
                         По навзванию (А-Я)
                     </p>
                     <p
                         onClick={() => {
-                            sortProduct("По названию (Я-А)")
+                            sortProduct("По названию (Я-А)", "name", "DESC")
                         }}
                     >
                         По названию (Я-А)

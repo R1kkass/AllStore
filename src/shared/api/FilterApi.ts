@@ -1,10 +1,10 @@
 import axios from "axios"
+import { domen } from "../const/apiConst"
 
 export interface IFilterApi {
-    id?: string
-    title: string
-    array: IArray[]
-    type?: string[]
+    nameCategory: string
+    id: number,
+    registerInput: string
 }
 
 export interface IArray{
@@ -17,33 +17,45 @@ export interface IFilterApiData {
 
 export const FilterApi = async () => {
     const res: IFilterApiData = await axios.get(
-        "https://641757421cbdda1fa1577617.mockapi.io/cx/xdgf"
+        `${domen}/getallcategory`,
+        {headers: {
+            "Authorization": `Bearer ${localStorage.getItem("token")}`
+        }}
     )
-    return res
+    return res.data
 }
 
 export const FilterApiPost = async (post: IFilterApi) => {
+    
     const res: IFilterApiData = await axios.post(
-        "https://641757421cbdda1fa1577617.mockapi.io/cx/xdgf",
-        { title: post.title, array: post.array }
+        `${domen}/admin/createcategory`,
+        { ...post },
+        {headers: {
+            "Authorization": `Bearer ${localStorage.getItem("token")}`
+        }}
     )
     return res
 }
 
 export const FilterApiDelte = async (id:number) => {
     const res: IFilterApiData = await axios.delete(
-        "https://641757421cbdda1fa1577617.mockapi.io/cx/xdgf/"+id
+        `${domen}/admin/deletecategory?id=`+id,
+        {headers: {
+            "Authorization": `Bearer ${localStorage.getItem("token")}`
+        }}
     )
     return res
 }
 
 export const FilterApiPut = async (id:number, post: IFilterApi) => {
-    console.log(post);
     
-    const res: IFilterApiData = await axios.put(
-        "https://641757421cbdda1fa1577617.mockapi.io/cx/xdgf/"+id,{
+    const res: IFilterApiData = await axios.post(
+        `${domen}/admin/createcategory?id=`+id,{
             ...post
-        }
+        },
+        {headers: {
+            "Authorization": `Bearer ${localStorage.getItem("token")}`
+        }}
     )
     return res
 }

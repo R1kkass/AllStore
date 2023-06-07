@@ -3,6 +3,8 @@ import { useSearchParams } from 'react-router-dom'
 import AdminPanel from '../../widgets/AdminPanel/AdminPanel'
 import EditPanel from '../../widgets/EditFiltres/EditPanel'
 import './Admin.scss'
+import NewsPanel from '../../widgets/NewsPanel/NewsPanel'
+import OrderPanel from '../../widgets/OrdersPanel/OrdersPanel'
 
 const elArr=[{
     id: 1,
@@ -11,6 +13,14 @@ const elArr=[{
 {
     id: 2,
     element: <EditPanel/>
+},
+{
+    id: 3,
+    element: <NewsPanel/>
+},
+{
+    id: 4,
+    element: <OrderPanel/>
 }
 ]
 
@@ -42,6 +52,12 @@ const Admin = () => {
                 </div>
                 <div className={searchParams.get('type')=='2' ? 'Active' : ''} onClick={()=>switchFn(2)}>
                     <h3>Категории</h3>
+                </div>
+                <div className={searchParams.get('type')=='3' ? 'Active' : ''} onClick={()=>switchFn(3)}>
+                    <h3>Новости</h3>
+                </div>
+                <div className={searchParams.get('type')=='4' ? 'Active' : ''} onClick={()=>switchFn(4)}>
+                    <h3>Заявки</h3>
                 </div>
             </div>
             <div className='Admin__window'>
