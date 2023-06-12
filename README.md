@@ -1,15 +1,19 @@
-# Getting Started with Create React App
+# Fullstack. АрзМото
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Stack: Redux, React, TS, Laravel, MySQL
 
-## Available Scripts
+### deploy: http://37.140.195.252:8081/#/
+### BackEnd Laravel: https://github.com/R1kkass/LaravelStore
 
-In the project directory, you can run:
+# Для работы разных фич нужно авторизоваться.
 
-### `npm start`
+## Страницы сайта:
+Авторизация: http://37.140.195.252:8081/#/auth/login
+Главная: http://37.140.195.252:8081/#/
+Кабинет: http://37.140.195.252:8081/#/cabinet
+Админка: http://37.140.195.252:8081/#/adm
+Новости: http://37.140.195.252:8081/#/news
+Корзина: http://37.140.195.252:8081/#/basket
+Каталог: http://37.140.195.252:8081/#/catalog
+Оформление заказа: http://37.140.195.252:8081/#/order
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console..
