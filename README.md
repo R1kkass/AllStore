@@ -2,8 +2,8 @@
 
 ## Stack: Redux, React, TS, Laravel, MySQL
 
-### deploy: http://37.140.195.252:8081/#/
-### BackEnd Laravel: https://github.com/R1kkass/LaravelStore
+## deploy: http://37.140.195.252:8081/#/
+## BackEnd Laravel: https://github.com/R1kkass/LaravelStore
 
 # Для работы разных фич нужно авторизоваться.
 
